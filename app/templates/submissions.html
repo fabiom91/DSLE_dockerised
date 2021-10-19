@@ -1,0 +1,135 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="text-center mb-4">
+        <h1 class="">Data Science Lab</h1>
+        <h3 class="h3 mb-3 font-weight-normal">Submitted solutions</h3>
+        <a href="/" class="btn btn-primary">Go to leaderboard</a>
+        {%  if is_closed %}
+            <div class="alert alert-warning mt-3" role="alert">
+                The competition is now CLOSED. You can not change the submitted solution anymore.
+            </div>
+        {% endif %}
+
+    </div>
+
+    {% if user_id %}
+        <div class="alert alert-warning mt-3" role="alert"> You have <strong>{{ left }}</strong>
+                submissions left!
+        </div>
+        <hr>
+        <h3>{{ user_id }} submissions</h3>
+
+        {% if not is_closed %}
+            <form action="/update_submissions" method="POST">
+        {% endif %}
+
+            <table class="table table-striped text-center table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Timestamp</th>
+                    <th scope="col">Score</th>
+                    {% if not is_closed %}
+                        <th scope="col">To evaluate</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for id, user_id, timestamp, pub_score, priv_check in user_submissions %}
+                    <tr class="{{ "table-primary" if (priv_check) else "" }}">
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ timestamp }}</td>
+                        <td>{{ pub_score }}</td>
+                        {% if not is_closed %}
+                            <td>
+
+                                <input class="single-checkbox"
+                                       type="checkbox"
+                                       id="{{ id }}_checkbox"
+                                       name="{{ id }}"
+                                       value=""
+                                        {{ "checked" if (priv_check) else "" }}
+                                >
+                            </td>
+                        {% endif %}
+                    </tr>
+
+
+                {% endfor %}
+
+
+                </tbody>
+            </table>
+
+        {% if not is_closed %}
+            <hr>
+
+            <div class="form-row">
+                <div class="col">
+                    <p>Click to update the submissions to be evaluated</p>
+                </div>
+                <div class="col text-right">
+                    <button class="btn btn-primary" type="submit">Update</button>
+
+                </div>
+            </div>
+
+
+            </form>
+        {% endif %}
+
+
+        <script type="application/javascript">
+            var limit = 2;
+            $('input.single-checkbox').on('change', function (evt) {
+
+                if ($(".single-checkbox:checked").length > limit) {
+                    this.checked = false;
+                }
+
+
+                if ($(this).is(':checked')) {
+                    const tr_element = $(this).parents()[1];
+                    $(tr_element).addClass("table-primary");
+
+                } else {
+                    const tr_element = $(this).parents()[1];
+                    $(tr_element).removeClass("table-primary");
+                }
+            });
+        </script>
+
+    {% else %}
+        <p>Specify your API key to get your submissions</p>
+        <form class="was-validated" action="/submissions" method="POST">
+            <div class="form-row">
+                <div class="col-md-8">
+                    <div class="form-group mb-2">
+                        <label class="sr-only" for="APIKey">API key</label>
+                        <input type="password"
+                               id="APIKeyInput"
+                               name="APIKey"
+                               class="form-control"
+                               placeholder="API key"
+                               value=""
+                               required>
+                    </div>
+
+                    <input type="hidden"
+                           id="submissionsRequestIdInput"
+                           name="submissionsRequestId"
+                           value="{{ submissions_request_id }}"
+                           required>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary mb-2" type="submit">Get submissions</button>
+
+                </div>
+
+            </div>
+        </form>
+    {% endif %}
+
+
+{% endblock %}

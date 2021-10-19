@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="text-center mb-4">
+        <h1 class="">Data Science Lab</h1>
+        <h1 class="h3 mb-3 font-weight-normal">Leaderboard {{ name }} </h1>
+
+        {% if can_submit %}
+
+            <a href="/submit" class="btn btn-primary">New submission</a>
+            <a href="/submissions" class="btn btn-primary">Check submissions</a>
+
+            {% if is_closed %}
+                {#                <a href="/fleaderboard" class="btn btn-info">Final leaderboard</a>#}
+                <div class="alert alert-warning mt-2">
+                    The competition is now CLOSED.
+                </div>
+            {% else %}
+                <div class="alert alert-info mt-2">
+                    <strong>Deadline (UTC Time):</strong> {{ close_time }}
+                </div>
+            {% endif %}
+        {% endif %}
+
+        {% if score %}
+            <div class="alert alert-success mt-3" role="alert">
+                The score for your current submission is: {{ score }}
+            </div>
+            <div class="alert alert-warning mt-3" role="alert"> You have <strong>{{ left }}</strong>
+                submissions left!
+            </div>
+
+        {% endif %}
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">User Id</th>
+            <th scope="col">Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user_id, score in participants %}
+
+            {% if user_id == "baseline" %}
+                <tr class="table-secondary">
+                    {% elif user_id == highlight_user_id %}
+                <tr class="table-primary">
+                    {% else %}
+                <tr>
+            {% endif %}
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ user_id }}</td>
+        <td>{{ score }}</td>
+        </tr>
+
+
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+
+{% endblock %}

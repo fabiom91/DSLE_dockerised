@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+    <form class="was-validated" action="/upload" method="POST" enctype="multipart/form-data">
+        <div class="text-center mb-4">
+            <h1 class="">Data Science Lab</h1>
+            <h1 class="h3 mb-3 font-weight-normal">Submission system</h1>
+
+            <a href="/" class="btn btn-primary">Go to leaderboard</a>
+            {% if is_closed %}
+                <div class="alert alert-warning mt-2" role="alert">
+                    The competition is now CLOSED.
+                    {# You can still submit your solution but your score won't be stored in the FINAL LEADERBOARD. #}
+                </div>
+            {% endif %}
+        </div>
+
+        {% if not is_closed %}
+            <div class="form-label-group mb-3">
+                <label for="APIKey">API key</label>
+                <input type="password"
+                       id="APIKeyInput"
+                       name="api_key"
+                       class="form-control"
+                       placeholder="A123456789"
+                       value=""
+                       required>
+            </div>
+
+            <div class="form-label-group  mb-4">
+                <label for="submittedSolution">Solution file</label>
+                <input type="file"
+                       class="form-control-file"
+                       id="submittedSolutionFileInput"
+                       name="submittedSolutionFile"
+                       required>
+            </div>
+
+            <input type="hidden"
+                   id="submitRequestIdInput"
+                   name="submitRequestId"
+                   value="{{ submit_request_id }}"
+                   required>
+
+            <div class="form-label-group">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+            </div>
+            </form>
+        {% endif %}
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+    <div class="card text-white {{ "bg-success" if with_success else "bg-danger" }} mt-5">
+        {% if with_success %}
+            <div class="card-header">Done</div>
+            <div class="card-body">
+                <p class="card-text">Selected solutions successfully updated.</p>
+                <a href="/" class="btn btn-primary">Go to leaderboard</a>
+
+            </div>
+        {% else %}
+            <div class="card-header">Error</div>
+            <div class="card-body">
+                <p class="card-text">There was an error updating the selected solutions! Please contact the
+                    administrator.</p>
+                <p>ERROR: {{ ex }}</p>
+                <a href="/" class="btn btn-primary">Go to leaderboard</a>
+
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

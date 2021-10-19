@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="text-center mb-4">
+        <h1 class="">Data Science Lab</h1>
+        <h1 class="h3 mb-3 font-weight-normal">Leaderboard {{ name }} </h1>
+            <a href="/submit" class="btn btn-primary">New submission</a>
+            {% if baseline==1%}
+
+                <div class="alert alert-success mt-3" role="alert">
+                    Baseline score correctly submitted.
+                </div>
+                <div class="alert alert-warning mt-3" role="alert">
+                    Only the highest baseline score will appear in the leaderbord.
+                </div>
+            {% endif %}
+            <div class="alert alert-info mt-3" role="alert">
+                The score for your current submission is: <br>
+                Public score: {{ pub_score }} <br>
+                Private score: {{ priv_score }}
+            </div>
+
+    </div>
+
+{% endblock %}
