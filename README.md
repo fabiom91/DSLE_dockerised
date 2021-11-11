@@ -3,7 +3,7 @@
 # Documentation:
 You can find the original documentation at the following links:
 - https://zenodo.org/record/3666486
-- -https://ieeexplore.ieee.org/document/9202557
+- https://ieeexplore.ieee.org/document/9202557
 
 However if you need more details on **how to run the API and make a competition**, please read this article: https://towardsdatascience.com/run-a-machine-learning-competition-for-free-today-9e87a9f5c00
 
